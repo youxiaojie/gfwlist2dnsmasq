@@ -18,29 +18,29 @@ mydnsip = '127.0.0.1'
 mydnsport = '5300'
 # Extra Domain;
 EX_DOMAIN=[ \
-'.google.com', \
-'.google.com.hk', \
-'.google.com.tw', \
-'.google.com.sg', \
-'.google.co.jp', \
-'.google.co.kr', \
-'.blogspot.com', \
-'.blogspot.sg', \
-'.blogspot.hk', \
-'.blogspot.jp', \
-'.blogspot.kr', \
-'.gvt1.com', \
-'.gvt2.com', \
-'.gvt3.com', \
-'.1e100.net', \
-'.blogspot.tw' \
+'google.com', \
+'google.com.hk', \
+'google.com.tw', \
+'google.com.sg', \
+'google.co.jp', \
+'google.co.kr', \
+'blogspot.com', \
+'blogspot.sg', \
+'blogspot.hk', \
+'blogspot.jp', \
+'blogspot.kr', \
+'gvt1.com', \
+'gvt2.com', \
+'gvt3.com', \
+'1e100.net', \
+'blogspot.tw' \
 ]
  
 # the url of gfwlist
 baseurl = 'https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt'
 # match comments/title/whitelist/ip address
 comment_pattern = '^\!|\[|^@@|^\d+\.\d+\.\d+\.\d+'
-domain_pattern = '([\w\-\_]+\.[\w\.\-\_]+)[\/\*]*' 
+domain_pattern = '(?:[\w\-]*\*[\w\-]*\.)?([\w\-]+\.[\w\.\-]+)[\/\*]*'
 ip_pattern = re.compile(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b')
 tmpfile = '/tmp/gfwlisttmp'
 # do not write to router internal flash directly
@@ -85,7 +85,7 @@ for line in tfs.readlines():
 					continue
 				print 'saving ' + domain[0]
 				domainlist.append(domain[0])
-				fs.write('server=/.%s/%s#%s\n'%(domain[0],mydnsip,mydnsport))
+				fs.write('server=/%s/%s#%s\n'%(domain[0],mydnsip,mydnsport))
 		else:
 			print 'no valid domain in this line: ' + line
 					
@@ -97,7 +97,7 @@ for each in EX_DOMAIN:
 print 'write extra domain done'
 
 fs.close();
-print 'moving generated file to dnsmasg directory'
+print 'moving generated file to dnsmasq directory'
 shutil.move(outfile, rulesfile)
 
 print 'done!'
